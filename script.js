@@ -90,6 +90,14 @@ function bfCountOpen(doors) {
   return c;
 }
 
+function getOpenDoorPositions(doors) {
+  const positions = [];
+  for (let i = 1; i <= n; i++) {
+    if (doors[i]) positions.push(i);
+  }
+  return positions;
+}
+
 function stepBF() {
   if (bfDone) return;
   const s = bfState;
@@ -107,15 +115,13 @@ function stepBF() {
     }
 
     if (s.j <= n) {
-      if (s.j === s.pass) {
-        s.doors[s.j] = !s.doors[s.j];
-        s.toggles++;
-        setLocker('bfLockers', s.j, 'toggled');
-        setTimeout(() => {
-          if (s.doors[s.j]) setLocker('bfLockers', s.j, 'open');
-          else setLocker('bfLockers', s.j, 'closed');
-        }, speedMs[speedIdx] * 0.6);
-      }
+      s.doors[s.j] = !s.doors[s.j];
+      s.toggles++;
+      setLocker('bfLockers', s.j, 'toggled');
+      setTimeout(() => {
+        if (s.doors[s.j]) setLocker('bfLockers', s.j, 'open');
+        else setLocker('bfLockers', s.j, 'closed');
+      }, speedMs[speedIdx] * 0.6);
       s.j += s.pass;
     }
 
@@ -141,6 +147,7 @@ function stepBF() {
 function finishBF() {
   bfDone = true;
   const open = bfCountOpen(bfState.doors);
+  const positions = getOpenDoorPositions(bfState.doors);
   document.getElementById('bfPass').textContent = n;
   document.getElementById('bfOpen').textContent = open;
   document.getElementById('bfProgress').style.width = '100%';
@@ -148,7 +155,7 @@ function finishBF() {
   document.getElementById('bfActual').textContent = bfState.toggles;
   const r = document.getElementById('bfResult');
   r.style.display = 'block';
-  r.textContent = open + ' locker(s) open: positions ' + getPerfectSquares(n).join(', ');
+  r.textContent = open + ' locker(s) open: positions ' + positions.join(', ');
   checkBothDone();
 }
 
@@ -192,7 +199,7 @@ function finishDC() {
   document.getElementById('dcActual').textContent = dcState.checks;
   const r = document.getElementById('dcResult');
   r.style.display = 'block';
-  r.textContent = dcState.open + ' locker(s) open: positions ' + getPerfectSquares(n).join(', ');
+  r.textContent = dcState.open + ' locker(s) open: positions ' + getOpenDoorPositions(dcState.doors).join(', ');
   checkBothDone();
 }
 
