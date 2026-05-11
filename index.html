@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Locker Toggle Visualizer</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <h2 class="sr-only">Interactive Locker Toggle Algorithm Game - compare Brute Force and Decrease and Conquer side by side</h2>
+
+  <div class="container">
+    <p class="title">Locker Toggle - Algorithm Visualizer</p>
+    <p class="subtitle">Watch Brute Force and Decrease & Conquer solve the same problem side by side.</p>
+
+    <div class="controls-row">
+      <div class="ctrl-group">
+        <span class="ctrl-label">Lockers (n):</span>
+        <input type="range" min="4" max="36" value="16" step="1" id="nSlider" style="width:120px;">
+        <span class="n-val" id="nVal">16</span>
+      </div>
+      <div class="speed-group">
+        <span class="ctrl-label">Speed:</span>
+        <input type="range" min="1" max="5" value="3" step="1" id="speedSlider" style="width:80px;">
+        <span class="ctrl-label" id="speedLabel">Normal</span>
+      </div>
+      <button class="btn primary" id="runBtn" onclick="startBoth()"><i class="ti ti-player-play" aria-hidden="true"></i> Run both</button>
+      <button class="btn" id="stepBtn" onclick="stepBoth()"><i class="ti ti-arrow-right" aria-hidden="true"></i> Step</button>
+      <button class="btn danger" onclick="resetAll()"><i class="ti ti-refresh" aria-hidden="true"></i> Reset</button>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#424a58;border:1.5px solid rgba(255,255,255,0.12);"></div> Closed</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#2ed59f;border:1.5px solid rgba(67,209,158,0.55);"></div> Open</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#ffcb69;border:1.5px solid rgba(255,196,106,0.58);"></div> Just toggled</div>
+    </div>
+
+    <div class="algo-grid">
+      <div class="algo-card">
+        <p class="algo-title">Brute Force</p>
+        <span class="algo-badge badge-bf">Simulate all passes</span>
+        <div class="progress-bar-wrap"><div class="progress-bar bf-bar" id="bfProgress" style="width:0%"></div></div>
+        <p class="pass-info" id="bfPassInfo">Ready - press Run or Step</p>
+        <div class="locker-grid" id="bfLockers"></div>
+        <div class="stats-row">
+          <div class="stat"><div class="stat-label">Pass</div><div class="stat-val" id="bfPass">0</div></div>
+          <div class="stat"><div class="stat-label">Toggles</div><div class="stat-val" id="bfToggles">0</div></div>
+          <div class="stat"><div class="stat-label">Open</div><div class="stat-val" id="bfOpen">0</div></div>
+        </div>
+        <div class="result-banner" id="bfResult"></div>
+      </div>
+
+      <div class="algo-card">
+        <p class="algo-title">Decrease & Conquer</p>
+        <span class="algo-badge badge-dc">Find perfect squares</span>
+        <div class="progress-bar-wrap"><div class="progress-bar dc-bar" id="dcProgress" style="width:0%"></div></div>
+        <p class="pass-info" id="dcPassInfo">Ready - press Run or Step</p>
+        <div class="locker-grid" id="dcLockers"></div>
+        <div class="stats-row">
+          <div class="stat"><div class="stat-label">Step (l)</div><div class="stat-val" id="dcStep">0</div></div>
+          <div class="stat"><div class="stat-label">Checks</div><div class="stat-val" id="dcChecks">0</div></div>
+          <div class="stat"><div class="stat-label">Open</div><div class="stat-val" id="dcOpen">0</div></div>
+        </div>
+        <div class="result-banner" id="dcResult"></div>
+      </div>
+    </div>
+
+    <div class="complexity-row">
+      <div class="cplx-card">
+        <p class="cplx-title">Brute Force - complexity</p>
+        <div class="cplx-item"><span>Time (best & worst)</span><span class="cplx-val">Theta(n log n)</span></div>
+        <div class="cplx-item"><span>Space (best & worst)</span><span class="cplx-val">Theta(n)</span></div>
+        <div class="cplx-item"><span>Total toggles for n=<span id="bfN">16</span></span><span class="cplx-val" id="bfActual">-</span></div>
+      </div>
+      <div class="cplx-card">
+        <p class="cplx-title">Decrease & Conquer - complexity</p>
+        <div class="cplx-item"><span>Time (best & worst)</span><span class="cplx-val">Theta(sqrt(n))</span></div>
+        <div class="cplx-item"><span>Space (best & worst)</span><span class="cplx-val">Theta(sqrt(n))</span></div>
+        <div class="cplx-item"><span>Steps for n=<span id="dcN">16</span></span><span class="cplx-val" id="dcActual">-</span></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
